@@ -1,0 +1,73 @@
+version: "2.1"
+
+volumes:
+  p2pfaas-data:
+  influxdb-data:
+
+
+services:
+  scheduler:
+    build: ./stack-scheduler
+    environment:
+      P2PFAAS_LOG_ENV: production
+      P2PFAAS_DEV_ENV: production
+    ports:
+      - 18080:18080
+    volumes:
+      - 'p2pfaas-data:/data'
+    restart: always
+
+  discovery:
+    build: ./stack-discovery
+    environment:
+      P2PFAAS_LOG_ENV: production
+      P2PFAAS_DEV_ENV: production
+    ports:
+      - 19000:19000
+    volumes:
+      - 'p2pfaas-data:/data'
+    restart: always
+
+  learner:
+    build: ./stack-learner
+    environment:
+      P2PFAAS_LOG_ENV: production
+      P2PFAAS_DEV_ENV: production
+    ports:
+      - 19020:19020
+    volumes:
+      - 'p2pfaas-data:/data'
+    restart: always
+
+  fn-pigo:
+    build: ./fn-pigo
+    environment:
+      output_mode: "image"
+      input_mode: "image"
+    restart: always
+    # ports:
+    #   - 28080:8080
+
+    # influxdb:
+    #   image: ./server-influxdb
+    #   restart: always
+    #   environment:
+    #     DOCKER_INFLUXDB_INIT_USERNAME: edgelab
+    #     DOCKER_INFLUXDB_INIT_PASSWORD: edgelab
+    #     DOCKER_INFLUXDB_INIT_ORG: edgelab
+    #     DOCKER_INFLUXDB_INIT_BUCKET: rpi
+    #     DOCKER_INFLUXDB_INIT_RETENTION: 1m
+    #     DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: uggr5BCPQptZghs5-5Nac2_FRApxpXdV1CuMcU3jlTjI7OvihwEDveobnRxAm34UKiWd5F_rWnB0MIOvONxijQ==
+    #   volumes:
+    #     - 'influxdb-data:/var/lib/influxdb2'
+
+    # telegraf:
+    #   image: ./server-telegraf
+    #   restart: always
+    #   environment:
+    #     INFLUX_TOKEN: uggr5BCPQptZghs5-5Nac2_FRApxpXdV1CuMcU3jlTjI7OvihwEDveobnRxAm34UKiWd5F_rWnB0MIOvONxijQ==
+
+    # fn-loop:
+    #   build: ./fn-loop
+    #   environment:
+    #     mi: 5.0

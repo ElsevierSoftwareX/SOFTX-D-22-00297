@@ -1,0 +1,9 @@
+[submodule "stack-discovery"]
+	path = stack-discovery
+	url = git@gitlab.com:p2p-faas/stack-discovery.git
+[submodule "stack-scheduler"]
+	path = stack-scheduler
+	url = git@gitlab.com:p2p-faas/stack-scheduler.git
+[submodule "stack-learner"]
+	path = stack-learner
+	url = git@gitlab.com:p2p-faas/stack-learner.git

@@ -1,0 +1,40 @@
+version: "2.1"
+
+volumes:
+  p2pfaas-data:
+  influxdb-data:
+
+
+services:
+  scheduler:
+    build: ./stack-scheduler
+    environment:
+      P2PFAAS_LOG_ENV: production
+      P2PFAAS_DEV_ENV: production
+    ports:
+      - 18080:18080
+    volumes:
+      - 'p2pfaas-data:/data'
+    restart: always
+
+  discovery:
+    build: ./stack-discovery
+    environment:
+      P2PFAAS_LOG_ENV: production
+      P2PFAAS_DEV_ENV: production
+    ports:
+      - 19000:19000
+    volumes:
+      - 'p2pfaas-data:/data'
+    restart: always
+
+  learner:
+    build: ./stack-learner
+    environment:
+      P2PFAAS_LOG_ENV: production
+      P2PFAAS_DEV_ENV: production
+    ports:
+      - 19020:19020
+    volumes:
+      - 'p2pfaas-data:/data'
+    restart: always
